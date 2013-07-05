@@ -6,13 +6,21 @@ var express = require('express');
 
 var app = express.createServer(express.logger());
 
+var staticHtmlPagesbuffer;
+
 app.get('/', function(request, response){
-    var buffer = fs.readFileSync("index.html");
-    response.write(buffer);
+
+    if (staticHtmlPagesbuffer === undefined || staticHtmlPagesbuffer.length === 0){
+            console.log("Leyendo desde fichero");
+            staticHtmlPagesbuffer = fs.readFileSync("index.html");
+        }
+
+    response.write(staticHtmlPagesbuffer);
+    response.end();
 });
 
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
-  console.log("Listening on " + port);
+    console.log("Listening on " + port);
 });
